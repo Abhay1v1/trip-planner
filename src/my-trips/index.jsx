@@ -1,11 +1,11 @@
 import { db } from '@/service/firebaseConfig';
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import UserTripCardItem from './components/UserTripCardItem';
 
 function MyTrips() {
-    const navigation=useNavigation();
+    const navigate = useNavigate();
     const [userTrips,setUserTrips] = useState([]);
     useEffect(() =>{
         GetUserTrips();
@@ -13,7 +13,7 @@ function MyTrips() {
     const GetUserTrips=async()=>{
         const user=JSON.parse(localStorage.getItem('user'));
         if(!user){
-            navigation('/');
+            navigate('/');
             return ;
         }
         const q=query(collection(db,'AITrips'),where('userEmail','==',user?.email))

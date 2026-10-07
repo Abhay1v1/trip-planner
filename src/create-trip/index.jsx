@@ -174,13 +174,18 @@ const CreateTrip = () => {
       .then((resp) => {
         console.log(resp);
         localStorage.setItem("user", JSON.stringify(resp.data));
+        window.dispatchEvent(new Event("authChange"));
         setOpenDailog(false);
         OnGenerateTrip();
+      })
+      .catch((error) => {
+        console.error("Google sign-in error:", error);
+        toast.error("Failed to sign in with Google.");
       });
   };
 
   return (
-    <div className='sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mtreac-10'>
+    <div className='sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10'>
       <h2 className='font-bold text-3xl'>
         Tell us your travel preferences 🌄🏔🌴
       </h2>
@@ -273,7 +278,7 @@ const CreateTrip = () => {
         </Button>
       </div>
 
-      <Dialog open={openDailog}>
+      <Dialog open={openDailog} onOpenChange={setOpenDailog}>
         <DialogContent>
           <DialogHeader>
             <DialogDescription>
