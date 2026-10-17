@@ -1,39 +1,10 @@
-import { GetPlaceDetails, PHOTO_REF_URL } from '@/service/GlobalApi'
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { ArrowUpRight, MapPin, Star } from 'lucide-react'
+import TripPhoto from './TripPhoto'
 
-const HotelCardItem = ({hotel}) => {
-
-    const [photoUrl,setPhotoUrl] = useState();
-    useEffect(()=>{
-      hotel&&GetPlacePhoto();
-    },[hotel])
-
-    const GetPlacePhoto=async()=>{
-        const data={
-            textQuery:hotel?.hotelName
-        }
-        const result=await GetPlaceDetails(data).then(resp=>{
-            // console.log(resp.data.places[0].photos[3].name)
-            const PhotoUrl=PHOTO_REF_URL.replace('{NAME}',resp.data.places[0].photos[3].name)
-            setPhotoUrl(PhotoUrl);
-        })
-    }
-  return (
-    <Link to={'https://www.google.com/maps/search/?api=1&query='+hotel?.hotelName+ "," +hotel?.hotelAddress} target='_blank'>                 
-                          
-                              <div className='hover:shadow-lg  hover:scale-105 transition-all  cursor-pointer mt-4'>
-                            <img src={photoUrl ? photoUrl : '/road-trip-vacation.jpg'} className='rounded-xl h-[180px] w-full object-cover' />
-                            <div className='my-3 py-1 flex flex-col gap-2'>
-                                <h2 className='font-medium' > {hotel?.hotelName }</h2>
-                                <h2 className='text-xs text-gray-500' > 📍 {hotel?.hotelAddress }</h2>
-                                <h2 className='text-sm'>💰{hotel?.price}</h2>
-                                <h2 className='text-sm'>⭐{hotel?.rating} </h2>
-                            </div>
-                          </div>
-
-          </Link>
-  )
+export default function HotelCardItem({ hotel }) {
+  const query = [hotel.hotelName, hotel.hotelAddress].filter(Boolean).join(', ')
+  return <article className="vt-hotel"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`} target="_blank" rel="noopener noreferrer" aria-label={`View ${hotel.hotelName || 'hotel'} on Google Maps (opens in a new tab)`}>
+    <div className="vt-hotel-image"><TripPhoto query={query} alt={hotel.hotelName || 'Hotel'} />{hotel.rating != null && <span className="vt-rating"><Star size={12} /> {hotel.rating}</span>}<span className="vt-image-arrow"><ArrowUpRight size={18} /></span></div>
+    <div className="vt-hotel-body"><h3>{hotel.hotelName || 'Suggested stay'}</h3><p className="vt-address"><MapPin size={13} /><span>{hotel.hotelAddress || 'See location on Maps'}</span></p>{hotel.description && <p className="vt-hotel-description">{hotel.description}</p>}<div className="vt-hotel-bottom"><div><span>ESTIMATED PRICE</span><strong>{hotel.price || 'Check with the hotel'}</strong></div><span className="vt-hotel-link">View stay <ArrowUpRight size={13} /></span></div></div>
+  </a></article>
 }
-
-export default HotelCardItem

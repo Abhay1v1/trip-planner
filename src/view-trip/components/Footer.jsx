@@ -1,12 +1,6 @@
-import React from 'react'
+import { Compass, ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
-function Footer({ trip }) {
-  return (
-    <div className='my-6'>
-      <h1 className='text-gray-900 font-bold text-center'>Created by Abhay</h1>
-      <h6 className='text-gray-400 text-center'> Trip Planner </h6>
-    </div>
-  )
+export default function Footer() {
+  return <footer className="vt-footer"><div className="vt-footer-invite"><Compass size={31} strokeWidth={1.2} /><div><h2>There’s always another adventure.</h2><p>Keep a little space in your calendar for wonder.</p></div><Link to="/create-trip">Plan another trip <ArrowUpRight size={17} /></Link></div><p className="vt-disclaimer">AI-generated suggestions are a starting point. Confirm prices, opening hours, and availability before you travel.</p><div className="vt-footer-bottom"><span>TRIP PLANNER <i>✳</i></span><span>Made for the joy of getting away.</span><span>Created by Abhay</span></div></footer>
 }
-
-export default Footer

@@ -1,17 +1,9 @@
-import React from 'react'
+import { BedDouble } from 'lucide-react'
 import HotelCardItem from './HotelCardItem'
 
-const Hotels = ({trip}) => {
-  return (
-    <div>
-      <h2 className='font-bold text-xl mt-5'>Hotel Recommendation</h2>
-        <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6'>
-            {trip?.TripData?.hotels?.map((hotel,index)=>(
-                <HotelCardItem hotel={hotel} key={index} />
-            ))}
-        </div>
-    </div>
-  )
+export default function Hotels({ trip }) {
+  const hotels = Array.isArray(trip.TripData?.hotels) ? trip.TripData.hotels.filter(Boolean) : []
+  return <section className="vt-section" id="trip-hotels" aria-labelledby="hotels-title"><div className="vt-section-heading"><div><span className="vt-eyebrow">REST, RECHARGE, REPEAT</span><h2 id="hotels-title">Somewhere to <em>settle in.</em></h2><p>A few stays to consider for your adventure.</p></div><span className="vt-count"><BedDouble size={16} /> {hotels.length} {hotels.length === 1 ? 'stay' : 'stays'}</span></div>
+    {hotels.length ? <div className="vt-hotels-grid">{hotels.map((hotel, index) => <HotelCardItem key={`${hotel.hotelName}-${index}`} hotel={hotel} />)}</div> : <p className="vt-empty">No hotel suggestions were included in this itinerary.</p>}
+  </section>
 }
-
-export default Hotels
